@@ -9,8 +9,10 @@ import { useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
+import { useSelector } from "react-redux";
+
 const pages = ["Home", "Contact"];
-const authorization = ["Dashboard", "Login", "Register", "Logout"];
+const authorization = ["Login", "Logout"];
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);

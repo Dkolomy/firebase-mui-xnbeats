@@ -1,40 +1,34 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Box, Container} from "@mui/material";
+import { Provider } from "react-redux";
+import { Box, Container } from "@mui/material";
 import Header from "./components/Header";
 import Footer from "./components/footer/Footer";
+import Contact from "./components/contact";
+import Home from "./components/home";
+import Login from "./components/login";
+
+import ReduxStore from "./store";
 
 const App = () => {
   return (
-    <Container maxWidth="lg">
-      <Header />
-      <Box
-        sx={{ display: "flex", flexDirection: "column", minHeight: "87vh" }}
-      >
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/home" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-        <Footer />
-      </Box>
-    </Container>
+    <Provider store={ReduxStore}>
+      <Container maxWidth="lg">
+        <Header />
+        <Box
+          sx={{ display: "flex", flexDirection: "column", minHeight: "87vh" }}
+        >
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/home" element={<Home />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <Footer />
+        </Box>
+      </Container>
+    </Provider>
   );
 };
 
-const Home = () => {
-  return <span>Home</span>;
-};
-
-const Dashboard = () => {
-  return <span>Dashboard</span>;
-};
-
-const Contact = () => {
-  return <span>Contact</span>;
-};
-
-const Copyright = () => {
-  return <span>Copyright</span>;
-};
 export default App;
