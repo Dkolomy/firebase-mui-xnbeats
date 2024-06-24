@@ -1,10 +1,10 @@
 // https://www.youtube.com/watch?v=YPVUPpKADb8
 
 import { configureStore } from "@reduxjs/toolkit";
-import authUser from "./reducers/auth";
+import authReducer from "./authorization/authSlice";
 
-export default configureStore({
+export const store = configureStore({
   reducer: {
-    authUser: authUser,
+    authUser: authReducer,
   },
 });

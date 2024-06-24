@@ -39,14 +39,14 @@ const Header = () => {
       <AppBar position="static">
         <Container maxWidth="x1">
           <Toolbar disableGutters>
-            <Link to={"/"} style={{ textDecoration: "none" }}>
+            {/* <Link to={"/"} style={{ textDecoration: "none" }}>
               <Typography sx={{ color: "black" }} variant="h6" component="a">
                 XN
               </Typography>
               <Typography sx={{ color: "red" }} variant="h6" component="a">
                 B
               </Typography>
-            </Link>
+            </Link> */}
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
