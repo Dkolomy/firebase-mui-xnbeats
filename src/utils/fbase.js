@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, serverTimestamp, collection } from "firebase/firestore";
 import { getStorage, ref } from "firebase/storage";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -29,7 +29,9 @@ export default initializeApp(firebaseConfig);
 
 // init services
 export const db = getFirestore();
-// export const collection_name = "cars";
+export const updated_at_timestamp = serverTimestamp();
+export const usersCollection = collection(db, 'users');
+
 export const auth = getAuth();
 
 // https://firebase.google.com/docs/storage/web/create-reference

@@ -1,20 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, TextField, Link, Divider, Stack } from "@mui/material";
+
 //import CloseIcon from "@mui/icons-material/Close";
 //import { signInWithEmailAndPassword } from "firebase/auth";
 //import { auth } from "../../utils/firebase";
 //import { registerUser } from "../../store/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { registerUser, loginUser } from "../../state/authorization/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const data = useSelector((state) => state.authUser);
+  const currState = useSelector((state) => state.authUser);
   const dispatch = useDispatch();
+  const navigation = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [register, setRegister] = useState(true);
 
   // console.log(data.value.email);
+
+  useEffect(() => {
+    console.log("*********")
+    console.log(currState)
+  }, [currState])
 
   const [userData, setUserData] = useState({
     email: "francis@gmail.com",
@@ -37,68 +45,38 @@ const Login = () => {
     setRegister(!register);
   };
 
-  // const [emailError, setEmailError] = useState(false);
-  // const [passwordError, setPasswordError] = useState(false);
-  // const [firstError, setFirstError] = useState(false);
-  // const [lastError, setLastError] = useState(false);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    // setEmailError(false);
-    // setPasswordError(false);
-    // setFirstError(false);
-    // setLastError(false);
-    // if (register) {
-    //   if (first === "") {
-    //     setEmailError(true);
-    //   }
-    //   if (last === "") {
-    //     setPasswordError(true);
-    //   }
-    // }
-    // if (email === "") {
-    //   setEmailError(true);
-    // }
-    // if (password === "") {
-    //   setPasswordError(true);
-    // }
-    // if (register) {
-    //   if (email && password && first && last) {
-    //     const formData = {
-    //       first: first,
-    //       last: last,
-    //       email: email,
-    //       password: email,
-    //     };
-    //     dispatch(registerUser(formData));
-    //     //        console.log(first, last, email, password);
-    //   }
-    // } else {
-    //   if (email && password) {
-    //     // await signInWithEmailAndPassword(auth, email, password)
-    //     //   .then((response) => {
-    //     //     console.log("Email Verified:", response.user.emailVerified);
-    //     //     setSnackMessage("Successfully Logged In");
-    //     //     setOpenSnack(true);
-    //     //   })
-    //     //   .catch((error) => {
-    //     //     // https://firebase.google.com/docs/reference/js/auth
-    //     //     // readonly INVALID_LOGIN_CREDENTIALS: "auth/invalid-credential";
-    //     //     const errorCode = error.code;
-    //     //     //        const errorMessage = error.message;
-    //     //     //        console.log(errorCode, errorMessage);
-    //     //     setSnackMessage(errorCode);
-    //     //     setOpenSnack(true);
-    //     //   });
-    //     const formData = {
-    //       email: email,
-    //       password: password,
-    //     };
-    //     dispatch(loginUser(formData));
-    //     //        console.log(email, password);
-    //   }
-    // }
+
+    let formData;
+    if (register) {
+      formData = {
+        email: userData.email,
+        password: userData.password,
+        first: userData.first,
+        last: userData.last,
+      };
+      dispatch(registerUser(formData));
+      handleRedirection();
+    } else {
+      formData = {
+        email: userData.email,
+        password: userData.password,
+      };
+      dispatch(loginUser(formData));
+      handleRedirection();
+    }
+  };
+
+  const handleRedirection = () => {
+    setLoading(false);
+    if (currState.isAuth) {
+      navigation("/");
+    } else {
+      setRegister(true);
+      navigation("/login");
+    }
   };
 
   return (
