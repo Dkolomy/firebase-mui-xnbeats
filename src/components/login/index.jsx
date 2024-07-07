@@ -30,12 +30,15 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
 
+  if (currState.isAuth) {
+    navigation("/");
+  }
   //  dispatch(autoSignIn());
   //  const st = useStore();
   //  console.log(st.getState())
 
   const [loading, setLoading] = useState(false);
-  const [register, setRegister] = useState(true);
+  const [register, setRegister] = useState(false);
 
   const [userData, setUserData] = useState({
     email: "francis@gmail.com",

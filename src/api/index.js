@@ -4,7 +4,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-import { addDoc, doc, setDoc, query, where, getDocs } from "firebase/firestore";
+import { addDoc, query, where, getDocs } from "firebase/firestore";
 import { usersCollection, auth } from "../utils/fbase";
 
 export const registerUser = async ({ first, last, email, password }) => {
@@ -48,7 +48,7 @@ export const autoSignIn = () => {
       if (user) {
         const q = query(usersCollection, where("uid", "==", user.uid));
         getDocs(q).then(querySnapshot => {
-          resolve({ isAuth: true, user: querySnapshot.docs[0].data() });
+          resolve({ isAuth: true, user: querySnapshot.docs[0].data(), errorCode: "" });
         });
       } else {
         resolve({ errorCode: "auth/not-logged" });

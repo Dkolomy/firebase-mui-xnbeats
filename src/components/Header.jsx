@@ -12,9 +12,11 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const pages = ["Home", "Contact"];
-const authorization = ["Login", "Logout"];
+const authorization = ["Login", "Profile", "Logout"];
 
 const Header = () => {
+  const isAuth = useSelector((state) => state.authUser.isAuth);
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -29,6 +31,11 @@ const Header = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const handleLogout = () => {
+    console.log("Logout")
+    handleCloseUserMenu()
+  }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -131,7 +138,43 @@ const Header = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {authorization.map((setting) => (
+                {!isAuth && (
+                  <MenuItem
+                    key={authorization[0]}
+                    component={Link}
+                    to={`/${authorization[0]}`}
+                    onClick={handleCloseUserMenu}
+                  >
+                    <Typography textAlign="center">
+                      {authorization[0]}
+                    </Typography>
+                  </MenuItem>
+                )}{" "}
+                {isAuth && (
+                  <MenuItem
+                    key={authorization[1]}
+                    component={Link}
+                    to={`/${authorization[1]}`}
+                    onClick={handleCloseUserMenu}
+                  >
+                    <Typography textAlign="center">
+                      {authorization[1]}
+                    </Typography>
+                  </MenuItem>
+                )}
+                {isAuth && (
+                  <MenuItem
+                    key={authorization[2]}
+                    component={Link}
+                    to={`/${authorization[2]}`}
+                    onClick={handleLogout}
+                  >
+                    <Typography textAlign="center">
+                      {authorization[2]}
+                    </Typography>
+                  </MenuItem>
+                )}
+                {/* {authorization.map((setting) => (
                   <MenuItem
                     key={setting}
                     component={Link}
@@ -140,7 +183,7 @@ const Header = () => {
                   >
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
-                ))}
+                ))} */}
               </Menu>
             </Box>
           </Toolbar>

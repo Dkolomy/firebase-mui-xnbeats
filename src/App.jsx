@@ -3,7 +3,7 @@ import { Box, Container, Snackbar, Alert, Button } from "@mui/material";
 //import { Provider } from "react-redux";
 //import { store } from "./state/store";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { autoSignIn, testData } from "./state/authorization/authSlice";
+import { autoSignIn } from "./state/authorization/authSlice";
 import Header from "./components/Header";
 import Footer from "./components/footer/Footer";
 import Contact from "./components/contact";
@@ -12,9 +12,17 @@ import Login from "./components/login";
 import { useEffect, useState } from "react";
 import { auth } from "./utils/fbase";
 import { onAuthStateChanged } from "firebase/auth";
+import * as api from "./api";
+import Profile from "./components/Profile";
 
 const App = () => {
-  //  const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    api.autoSignIn().then((result) => {
+      dispatch(autoSignIn(result));
+    });
+  }, []);
 
   // Snackbar related BEGIN
   // const [open, setOpen] = useState(false);
@@ -95,6 +103,7 @@ const App = () => {
           <Route exact path="/home" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Footer />
