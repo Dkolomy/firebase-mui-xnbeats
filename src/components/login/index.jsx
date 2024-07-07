@@ -1,28 +1,41 @@
 import { useEffect, useState } from "react";
-import { Button, TextField, Link, Divider, Stack } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Link,
+  Divider,
+  Stack,
+  Snackbar,
+  IconButton,
+  Alert,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 //import CloseIcon from "@mui/icons-material/Close";
 //import { signInWithEmailAndPassword } from "firebase/auth";
 //import { auth } from "../../utils/firebase";
 //import { registerUser } from "../../store/actions";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { registerUser, loginUser } from "../../state/authorization/authSlice";
+import {
+  registerUser,
+  loginUser,
+  autoSignIn,
+} from "../../state/authorization/authSlice";
 import { useNavigate } from "react-router-dom";
+import * as api from "../../api";
 
 const Login = () => {
   const currState = useSelector((state) => state.authUser);
+
   const dispatch = useDispatch();
   const navigation = useNavigate();
 
+  //  dispatch(autoSignIn());
+  //  const st = useStore();
+  //  console.log(st.getState())
+
   const [loading, setLoading] = useState(false);
   const [register, setRegister] = useState(true);
-
-  // console.log(data.value.email);
-
-  useEffect(() => {
-    console.log("*********")
-    console.log(currState)
-  }, [currState])
 
   const [userData, setUserData] = useState({
     email: "francis@gmail.com",
@@ -57,24 +70,41 @@ const Login = () => {
         first: userData.first,
         last: userData.last,
       };
-      dispatch(registerUser(formData));
-      handleRedirection();
+      api
+        .registerUser(formData)
+        .then((result) => {
+          dispatch(registerUser(result));
+          handleRedirection();
+        })
+        .catch((err) => console.log(err));
     } else {
       formData = {
         email: userData.email,
         password: userData.password,
       };
-      dispatch(loginUser(formData));
-      handleRedirection();
+      api
+        .loginUser(formData)
+        .then((result) => {
+          dispatch(loginUser(result));
+          handleRedirection();
+        })
+        .catch((err) => console.log(err));
     }
   };
 
   const handleRedirection = () => {
     setLoading(false);
     if (currState.isAuth) {
+      // handleSubmit(action + " successful", "success")
+      // setSeverity("success");
+      // setMessage(action + " successful");
+      // setOpen(true);
       navigation("/");
     } else {
-      setRegister(true);
+      // handleSubmit(action + " failed: " + currState.errorCode, "error")
+      // setSeverity("error");
+      // setMessage(action + " failed: " + currState.errorCode);
+      // setOpen(true);
       navigation("/login");
     }
   };
