@@ -3,6 +3,7 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import { addDoc, query, where, getDocs } from "firebase/firestore";
 import { usersCollection, auth } from "../utils/fbase";
@@ -51,11 +52,20 @@ export const autoSignIn = () => {
           resolve({ isAuth: true, user: querySnapshot.docs[0].data(), errorCode: "" });
         });
       } else {
-        resolve({ errorCode: "auth/not-logged" });
+        resolve({ isAuth: false, user: null, errorCode: "" });
       }
     });
   });
 };
+
+export const logoutUser = async () => {
+  try {
+    await signOut();
+    return { isAuth: false, user: null, errorCode: "" };
+  } catch (error) {
+    return { isAuth: false, user: null, errorCode: error.code };
+  }
+}
 
 export const fakeApi = () => {
   return new Promise((resolve, reject) => {

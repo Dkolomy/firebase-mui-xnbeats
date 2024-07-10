@@ -31,13 +31,20 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     registerUser: (state = initialState, action) => {
-      return { ...state, ...action.payload, checkingAuth: true };
+//      return { ...state, ...action.payload, checkingAuth: true };
+      return { ...action.payload, checkingAuth: true };
     },
     loginUser: (state = initialState, action) => {
-      return { ...state, ...action.payload, checkingAuth: true };
+//      return { ...state, ...action.payload, checkingAuth: true };
+      return {  ...action.payload, checkingAuth: true };
     },
     autoSignIn: (state = initialState, action) => {
       return { ...state, ...action.payload, checkingAuth: true };
+      // return {  ...action.payload, checkingAuth: true };
+    },
+    logoutUser: (state = initialState, action) => {
+      return {  ...action.payload, checkingAuth: false };
+      // return { ...state, ...action.payload, checkingAuth: true };
     },
     testData: (state = initialState, action) => {
       return { ...state, isAuth: true, checkingAuth: true };
@@ -57,5 +64,5 @@ const authSlice = createSlice({
 
 // export const { registerUser, loginUser, autoSignIn, testData } =
 //   authSlice.actions;
-export const { registerUser, loginUser, autoSignIn } = authSlice.actions;
+export const { registerUser, loginUser, autoSignIn, logoutUser } = authSlice.actions;
 export default authSlice.reducer;

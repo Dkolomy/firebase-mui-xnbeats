@@ -1,21 +1,31 @@
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import { Box, Container, Menu, MenuItem, Tooltip } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
-import { AccountCircle } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Box,
+  Container,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { AccountCircle } from "@mui/icons-material";
+import * as api from "../api";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../state/authorization/authSlice";
 
 const pages = ["Home", "Contact"];
 const authorization = ["Login", "Profile", "Logout"];
 
 const Header = () => {
   const isAuth = useSelector((state) => state.authUser.isAuth);
+//  console.log(isAuth)
+  const dispatch = useDispatch();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -33,9 +43,11 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    console.log("Logout")
-    handleCloseUserMenu()
-  }
+    api.logoutUser().then((result) => {
+      dispatch(logoutUser(result));
+    });
+    handleCloseUserMenu();
+  };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);

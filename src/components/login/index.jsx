@@ -8,6 +8,7 @@ import {
   Snackbar,
   IconButton,
   Alert,
+  Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -25,26 +26,24 @@ import { useNavigate } from "react-router-dom";
 import * as api from "../../api";
 
 const Login = () => {
-  const currState = useSelector((state) => state.authUser);
+  const user = useSelector((state) => state.authUser);
 
   const dispatch = useDispatch();
   const navigation = useNavigate();
 
-  if (currState.isAuth) {
-    navigation("/");
-  }
   //  dispatch(autoSignIn());
   //  const st = useStore();
   //  console.log(st.getState())
 
+  const [authError, setAuthError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [register, setRegister] = useState(false);
 
   const [userData, setUserData] = useState({
-    email: "francis@gmail.com",
-    password: "test1234",
-    first: "francis",
-    last: "jones",
+    email: "",
+    password: "",
+    first: "",
+    last: "",
   });
 
   const handleInput = (event) => {
@@ -64,6 +63,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
+    setAuthError(false);
 
     let formData;
     if (register) {
@@ -97,17 +97,17 @@ const Login = () => {
 
   const handleRedirection = () => {
     setLoading(false);
-    if (currState.isAuth) {
-      // handleSubmit(action + " successful", "success")
-      // setSeverity("success");
-      // setMessage(action + " successful");
-      // setOpen(true);
-      navigation("/");
+
+    console.log("handleRedirection")
+    console.log(user.isAuth)
+
+
+
+    if (user.isAuth) {
+      setAuthError(false);
+      navigation("/home");
     } else {
-      // handleSubmit(action + " failed: " + currState.errorCode, "error")
-      // setSeverity("error");
-      // setMessage(action + " failed: " + currState.errorCode);
-      // setOpen(true);
+      setAuthError(true);
       navigation("/login");
     }
   };
@@ -116,6 +116,7 @@ const Login = () => {
     <>
       <form autoComplete="off" onSubmit={handleSubmit}>
         <h2>{register ? "Register" : "Login"} Form</h2>
+        {authError && <Typography color={"red"}>{user.errorCode}</Typography>}
         {register && (
           <>
             <TextField
